@@ -7,11 +7,19 @@ export class AuthService {
     constructor(private jwtService: JwtService) { }
 
     validateUser(username: string, password: string) {
-        return users.find(u => u.username === username && u.password === password);
+        return users.find(
+            (user) => user.username === username && user.password === password
+        );
     }
 
     login(user: any) {
-        const payload = { username: user.username, sub: user.id, role: user.role };
-        return { access_token: this.jwtService.sign(payload) };
+        const payload = {
+            username: user.username,
+            sub: user.id,
+            role: user.role,
+        };
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
     }
 }
