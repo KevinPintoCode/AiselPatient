@@ -2,7 +2,32 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PatientsService {
-    private patients: any[] = [];
+    private patients: any[] = [
+        {
+            id: 1,
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@example.com',
+            phoneNumber: '1234567890',
+            dob: '1990-01-01',
+        },
+        {
+            id: 2,
+            firstName: 'Jane',
+            lastName: 'Smith',
+            email: 'jane.smith@example.com',
+            phoneNumber: '0987654321',
+            dob: '1995-05-15',
+        },
+        {
+            id: 3,
+            firstName: 'Jim',
+            lastName: 'Beam',
+            email: 'jim.beam@example.com',
+            phoneNumber: '1111111111',
+            dob: '1992-03-20',
+        },
+    ];
 
     findAll() {
         return this.patients;
