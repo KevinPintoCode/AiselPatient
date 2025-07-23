@@ -2,13 +2,14 @@ import Image from 'next/image';
 
 export default function HeroImage() {
     return (
-        <div className="w-full h-full relative rounded-3xl overflow-hidden">
+        <div className="relative w-full h-full rounded-3xl">
+            {/* SVG hero */}
             <Image
-                src="/doctor-hero.jpg"
-                alt="Doctor smiling"
+                src="/Group1.png"
+                alt="Healthcare hero"
                 fill
                 priority
-                className="object-cover"
+                className="object-cover rounded-3xl"
             />
         </div>
     );

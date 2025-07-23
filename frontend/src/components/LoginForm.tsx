@@ -41,14 +41,17 @@ export default function LoginForm() {
 
     return (
         <div className="bg-gradient-to-br from-brand-primary/40 to-brand-primary/10 rounded-3xl p-[2px] w-full max-w-md shadow-xl">
-            <div className="rounded-[inherit] bg-background/80 backdrop-blur-md p-10 flex flex-col gap-6">
+            <div className="rounded-[inherit] bg-white backdrop-blur-md p-10 flex flex-col gap-6">
                 {/* Logo */}
                 <div className="flex items-center gap-2 mb-2 self-start">
                     <Image src="/medical-symbol.png" alt="Logo" width={32} height={32} />
-                    <span className="text-lg font-semibold">AiselCase</span>
+                    <span className="text-lg font-semibold">
+                        Aisel<span className="text-[#0D42A8]">Case</span>
+                    </span>
+
                 </div>
 
-                <h1 className="text-3xl font-semibold text-foreground">Hi there, …..</h1>
+                <h1 className="text-3xl font-semibold text-foreground">Hi there, <span className="text-[#0D42A8]">…..</span></h1>
                 <p className="text-muted-foreground mb-4">Welcome back to the Patients Portal.</p>
                 <div className="space-y-4">
                     <div className="space-y-2">
