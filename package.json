@@ -1,5 +1,31 @@
 {
+  "name": "patients-managment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install:all": "npm install && cd patients-app/frontend && npm install && cd ../backend && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevinPintoCode/AiselPatient.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/KevinPintoCode/AiselPatient/issues"
+  },
+  "homepage": "https://github.com/KevinPintoCode/AiselPatient#readme",
   "dependencies": {
     "@nestjs/cli": "^11.0.7"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "init": "^0.1.2",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11"
   }
 }
