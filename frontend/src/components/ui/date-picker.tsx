@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { format, parseISO, subMonths } from 'date-fns'
+import { format, parseISO, subYears } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -16,10 +16,17 @@ interface Props {
 }
 
 export function DatePicker({ value, onChange, placeholder = 'Pick a date', className }: Props) {
+    const today = new Date()
+    const maxDate = today
+    const minDate = subYears(today, 120)
+    const defaultMonth = value ? parseISO(value) : subYears(today, 30)
     const [date, setDate] = React.useState<Date | undefined>(value ? parseISO(value) : undefined)
 
     React.useEffect(() => {
-        if (value) setDate(parseISO(value))
+        if (value) {
+            const parsedDate = parseISO(value)
+            setDate(parsedDate)
+        }
     }, [value])
 
     const handleSelect = (d?: Date) => {
@@ -46,9 +53,11 @@ export function DatePicker({ value, onChange, placeholder = 'Pick a date', class
                 <Calendar
                     mode="single"
                     selected={date}
-                    month={date ?? subMonths(new Date(), 6)}
                     onSelect={handleSelect}
-                    disabled={(d) => d > subMonths(new Date(), 6)}
+                    defaultMonth={defaultMonth}
+                    fromDate={minDate}
+                    toDate={maxDate}
+                    initialFocus
                 />
             </PopoverContent>
         </Popover>

@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Get('ping')
-  getPing() {
-    return { message: 'pong' };
+  ping(): string {
+    return 'pong';
   }
 }

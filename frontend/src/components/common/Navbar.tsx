@@ -9,7 +9,7 @@ export default function Navbar() {
     if (pathname === '/') return null;
 
     return (
-        <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
+        <nav className="w-full bg-white border-b border-gray-100">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                     <Image src="/medical-symbol.png" alt="Logo" width={28} height={28} />
