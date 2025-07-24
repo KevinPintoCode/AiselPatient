@@ -4,10 +4,12 @@ import { Patient } from '../types'
 export const patientsApi = createApi({
     reducerPath: 'patientsApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:3000',
+        baseUrl: process.env.NEXT_PUBLIC_API_URL, // ✅ now dynamic
         prepareHeaders: (headers) => {
-            const token = localStorage.getItem('token')
-            if (token) headers.set('Authorization', `Bearer ${token}`)
+            if (typeof window !== 'undefined') {
+                const token = localStorage.getItem('token')
+                if (token) headers.set('Authorization', `Bearer ${token}`)
+            }
             return headers
         },
     }),

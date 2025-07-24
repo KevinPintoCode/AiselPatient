@@ -1,3 +1,48 @@
+# Patients Frontend (Next.js + Tailwind + RTK Query)
+
+## Quickstart
+
+### Clone & install
+```bash
+git clone https://github.com/your-user/aisel-case.git
+cd aisel-case
+npm install   # installs dependencies for **all** workspaces
+```
+
+### Environment
+Create a `.env.local` inside `frontend/` (and on Vercel) with:
+```
+NEXT_PUBLIC_API_URL=https://patients-api.onrender.com  # change to your backend URL
+```
+If you are working locally keep it as:
+```
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+### Development
+```bash
+# from repo root
+pm run dev  # runs backend + frontend concurrently
+# or only the UI
+npm run dev:frontend
+```
+App will be available at `http://localhost:3001`.
+
+### Production build / preview
+```bash
+npm run build -w frontend
+npm run start -w frontend
+```
+
+### Deploy
+1. Deploy the backend first (see backend README).  Note the public URL.
+2. Push this repo to GitHub then import it in Vercel.
+3. Add the env variable `NEXT_PUBLIC_API_URL` in the Vercel dashboard pointing to your backend.
+4. Hit *Deploy* – your app will be live, e.g.:
+   https://aisel-case.vercel.app
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

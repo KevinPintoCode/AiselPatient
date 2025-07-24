@@ -90,6 +90,7 @@ export default function PatientsPage() {
                     patient={editPatient}
                     open={!!editPatient}
                     onClose={() => setEditPatient(null)}
+
                 />
             )}
             <Dialog open={confirmId !== null} onOpenChange={(v) => !v && setConfirmId(null)}>
