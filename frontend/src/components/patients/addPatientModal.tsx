@@ -65,7 +65,7 @@ export default function AddPatientModal() {
             <DialogTrigger asChild>
                 <Button>Add Patient</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="bg-white">
                 <DialogHeader>
                     <DialogTitle>Add New Patient</DialogTitle>
                 </DialogHeader>

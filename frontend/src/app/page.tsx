@@ -1,5 +1,5 @@
-import LoginForm from '@/components/LoginForm';
-import HeroImage from '@/components/HeroImage';
+import LoginForm from '@/components/home/LoginForm';
+import HeroImage from '@/components/home/HeroImage';
 
 export default function Home() {
   return (

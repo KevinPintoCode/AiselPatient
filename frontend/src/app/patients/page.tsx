@@ -3,10 +3,21 @@
 import { useGetPatientsQuery } from '@/store/patientsApi'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
-import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import AddPatientModal from '@/components/addPatientModal'
+import { useEffect, useState } from 'react'
+import AddPatientModal from '@/components/patients/addPatientModal'
+import PatientsHeader from '@/components/patients/PatientsHeader'
+import PatientsTable from '@/components/patients/PatientsTable'
+import Pagination from '@/components/common/Pagination'
+import PageWrapper from '@/components/common/PageWrapper'
+import EditPatientModal from '@/components/patients/EditPatientModal'
+import { useDeletePatientMutation } from '@/store/patientsApi'
+import { Patient } from '@/types'
+import { toast } from 'sonner'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+
+const PAGE_SIZE = 5
 
 export default function PatientsPage() {
     const { data: patients, isLoading, error } = useGetPatientsQuery()
@@ -14,77 +25,85 @@ export default function PatientsPage() {
     const token = useSelector((state: RootState) => state.auth.token)
     const router = useRouter()
 
+    const [page, setPage] = useState(1)
+    const [editPatient, setEditPatient] = useState<Patient | null>(null)
+    const [confirmId, setConfirmId] = useState<number | null>(null)
+    const [deletePatient] = useDeletePatientMutation()
+
     useEffect(() => {
-        if (!token) router.push('/login')
+        if (!token) router.push('/')
     }, [token])
 
     if (isLoading) return <p className="p-4 text-center">Loading patients...</p>
     if (error) return <p className="p-4 text-center text-red-500">Error loading patients.</p>
 
+    const total = patients?.length ?? 0
+    const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE))
+    const start = (page - 1) * PAGE_SIZE
+    const end = start + PAGE_SIZE
+    const visible = patients?.slice(start, end) ?? []
+
+    const handleEdit = (id: number) => {
+        const p = patients?.find((pat) => pat.id === id) || null;
+        setEditPatient(p);
+    }
+
+    const requestDelete = (id: number) => setConfirmId(id);
+
+    const confirmDelete = async () => {
+        if (confirmId === null) return;
+        try {
+            await deletePatient(confirmId).unwrap();
+            toast.success('🎉 Patient removed – less paperwork for everyone!');
+        } catch {
+            toast.error('😢 Could not delete patient');
+        } finally {
+            setConfirmId(null);
+        }
+    }
+
     return (
+        <PageWrapper >
+            <div className="bg-gradient-to-br from-brand-primary/40 to-brand-primary/10 rounded-3xl p-[2px] w-full max-w-6xl shadow-xl">
+                <div className="rounded-[inherit] bg-white backdrop-blur-md p-8 md:p-12 space-y-8">
+                    {/* Header */}
+                    <PatientsHeader
+                        name={role === 'admin' ? 'Admin' : 'User'}
+                        action={role === 'admin' && <AddPatientModal />}
+                    />
+                    <PatientsTable
+                        patients={visible}
+                        role={role ?? ''}
+                        onEdit={handleEdit}
+                        onDelete={requestDelete}
+                    />
 
-        <div className="p-6 max-w-6xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Patient List</h1>
-                {role === 'admin' && (
-                    <AddPatientModal />
-                )}
+                    <Pagination
+                        currentPage={page}
+                        totalPages={pageCount}
+                        onPageChange={setPage}
+                    />
+                </div>
             </div>
-
-            <div className="overflow-auto rounded-lg shadow bg-white">
-                <table className="min-w-full text-sm">
-                    <thead className="bg-gray-100 text-left">
-                        <tr>
-                            <th className="p-4 font-medium">Avatar</th>
-                            <th className="p-4 font-medium">Name</th>
-                            <th className="p-4 font-medium">Email</th>
-                            <th className="p-4 font-medium">Phone</th>
-                            <th className="p-4 font-medium">Date of Birth</th>
-                            {role === 'admin' && <th className="p-4 font-medium">Actions</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {patients?.map((patient) => {
-                            return (
-                                <tr key={patient.id} className="border-t">
-                                    <td className="p-4">
-                                        <div className="bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full">
-                                            {patient.firstName[0]}{patient.lastName[0]}
-                                        </div>
-                                    </td>
-
-                                    <td className="p-4">{patient.firstName} {patient.lastName}</td>
-                                    <td className="p-4">{patient.email}</td>
-                                    <td className="p-4">{patient.phoneNumber}</td>
-                                    <td className="p-4">
-                                        {typeof patient.dob === 'string' && !isNaN(new Date(patient.dob).getTime())
-                                            ? new Date(patient.dob).toLocaleDateString()
-                                            : '—'}
-                                    </td>
-                                    {role === 'admin' && (
-                                        <td className="p-4 space-x-2">
-                                            <Button
-                                                size="sm"
-                                                variant="outline"
-                                                onClick={() => alert('TODO: edit form')}
-                                            >
-                                                Edit
-                                            </Button>
-                                            <Button
-                                                size="sm"
-                                                variant="destructive"
-                                                onClick={() => alert('TODO: delete')}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </td>
-                                    )}
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            {editPatient && (
+                <EditPatientModal
+                    patient={editPatient}
+                    open={!!editPatient}
+                    onClose={() => setEditPatient(null)}
+                />
+            )}
+            <Dialog open={confirmId !== null} onOpenChange={(v) => !v && setConfirmId(null)}>
+                <DialogContent className="bg-white">
+                    <DialogHeader>
+                        <DialogTitle>Delete patient?</DialogTitle>
+                    </DialogHeader>
+                    <p className="text-sm text-gray-600">They’ll be gone from the list but hopefully still healthy! 🏃‍♂️💨</p>
+                    <div className="flex justify-end gap-3 pt-4">
+                        <Button variant="secondary" onClick={() => setConfirmId(null)}>Cancel</Button>
+                        <Button className="!bg-red-600 text-white hover:!bg-red-700" onClick={confirmDelete}>Yes, delete</Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </PageWrapper>
     )
 }
