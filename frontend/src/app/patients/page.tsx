@@ -32,7 +32,7 @@ export default function PatientsPage() {
 
     useEffect(() => {
         if (!token) router.push('/')
-    }, [token])
+    }, [token, router])
 
     if (isLoading) return <p className="p-4 text-center">Loading patients...</p>
     if (error) return <p className="p-4 text-center text-red-500">Error loading patients.</p>

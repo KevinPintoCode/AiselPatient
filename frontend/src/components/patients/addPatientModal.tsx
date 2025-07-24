@@ -56,7 +56,7 @@ export default function AddPatientModal() {
             setOpen(false)
             setForm({ firstName: '', lastName: '', email: '', phoneNumber: '', dob: '' })
             setErrors({})
-        } catch (err) {
+        } catch {
             alert('Error creating patient')
         }
     }

@@ -30,7 +30,8 @@ export default function EditPatientModal({ patient, open, onClose }: Props) {
 
     useEffect(() => {
         if (patient) {
-            const { id, ...rest } = patient
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { id: _ignore, ...rest } = patient
             setForm(rest)
         }
     }, [patient])

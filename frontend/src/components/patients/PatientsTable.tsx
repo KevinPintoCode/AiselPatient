@@ -1,6 +1,5 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 // Helper function to generate random pastel colors
