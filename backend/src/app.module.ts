@@ -3,6 +3,8 @@ import { AuthModule } from './auth/auth.module';
 import { PatientsModule } from './patients/patients.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -13,6 +15,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [JwtStrategy],
+  controllers: [AppController],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule { }

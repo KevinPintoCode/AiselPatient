@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Get('ping')
-  ping(): string {
-    return 'pong'; // <- This is what we want to see when backend is running
+  getPing() {
+    return { message: 'pong' };
   }
 }
