@@ -8,6 +8,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { DatePicker } from '@/components/ui/date-picker'
 import { Button } from '@/components/ui/button'
 import { useUpdatePatientMutation } from '@/store/patientsApi'
 import { Patient } from '@/types'
@@ -127,12 +128,10 @@ export default function EditPatientModal({ patient, open, onClose }: Props) {
                     </div>
                     {/* DOB */}
                     <div className="space-y-1">
-                        <Input
-                            name="dob"
-                            type="date"
+                        <DatePicker
                             value={form.dob}
-                            onChange={handleChange}
-                            className={errors.dob ? 'border-red-500 focus-visible:ring-red-500' : ''}
+                            onChange={(v) => setForm({ ...form, dob: v })}
+                            className={errors.dob ? 'border-red-500' : ''}
                         />
                         {errors.dob && <p className="text-sm text-red-500">{errors.dob}</p>}
                     </div>

@@ -9,6 +9,7 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { DatePicker } from '@/components/ui/date-picker'
 import { Button } from '@/components/ui/button'
 import { useAddPatientMutation } from '@/store/patientsApi'
 
@@ -126,13 +127,10 @@ export default function AddPatientModal() {
 
                     {/* Date of Birth */}
                     <div className="space-y-1">
-                        <Input
-                            name="dob"
-                            type="date"
-                            placeholder="Date of Birth"
+                        <DatePicker
                             value={form.dob}
-                            onChange={handleChange}
-                            className={errors.dob ? 'border-red-500 focus-visible:ring-red-500' : ''}
+                            onChange={(v) => setForm({ ...form, dob: v })}
+                            className={errors.dob ? 'border-red-500' : ''}
                         />
                         {errors.dob && <p className="text-sm text-red-500">{errors.dob}</p>}
                     </div>
