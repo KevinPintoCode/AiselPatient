@@ -34,12 +34,23 @@ export default function PatientsPage() {
         if (!token) router.push('/')
     }, [token, router])
 
+    // Adjust page number when total items changes
+    useEffect(() => {
+        if (!patients) return;
+        const maxPage = Math.max(1, Math.ceil(patients.length / PAGE_SIZE));
+        if (page > maxPage) {
+            setPage(maxPage);
+        }
+    }, [patients?.length, page]); // Only depend on the length
+
     if (isLoading) return <p className="p-4 text-center">Loading patients...</p>
     if (error) return <p className="p-4 text-center text-red-500">Error loading patients.</p>
 
     const total = patients?.length ?? 0
     const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE))
-    const start = (page - 1) * PAGE_SIZE
+    // Ensure page is within bounds
+    const currentPage = Math.max(1, Math.min(page, pageCount))
+    const start = (currentPage - 1) * PAGE_SIZE
     const end = start + PAGE_SIZE
     const visible = patients?.slice(start, end) ?? []
 
@@ -54,6 +65,11 @@ export default function PatientsPage() {
         if (confirmId === null) return;
         try {
             await deletePatient(confirmId).unwrap();
+            const remainingPatients = patients?.filter(p => p.id !== confirmId) ?? [];
+            const newMaxPage = Math.max(1, Math.ceil(remainingPatients.length / PAGE_SIZE));
+            if (page > newMaxPage) {
+                setPage(newMaxPage);
+            }
             toast.success('🎉 Patient removed – less paperwork for everyone!');
         } catch {
             toast.error('😢 Could not delete patient');
@@ -90,7 +106,6 @@ export default function PatientsPage() {
                     patient={editPatient}
                     open={!!editPatient}
                     onClose={() => setEditPatient(null)}
-
                 />
             )}
             <Dialog open={confirmId !== null} onOpenChange={(v) => !v && setConfirmId(null)}>
@@ -98,7 +113,7 @@ export default function PatientsPage() {
                     <DialogHeader>
                         <DialogTitle>Delete patient?</DialogTitle>
                     </DialogHeader>
-                    <p className="text-sm text-gray-600">They’ll be gone from the list but hopefully still healthy! 🏃‍♂️💨</p>
+                    <p className="text-sm text-gray-600">They'll be gone from the list but hopefully still healthy! 🏃‍♂️💨</p>
                     <div className="flex justify-end gap-3 pt-4">
                         <Button variant="secondary" onClick={() => setConfirmId(null)}>Cancel</Button>
                         <Button className="!bg-red-600 text-white hover:!bg-red-700" onClick={confirmDelete}>Yes, delete</Button>
