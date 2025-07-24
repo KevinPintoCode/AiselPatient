@@ -65,7 +65,7 @@ export default function PatientsPage() {
     return (
         <PageWrapper >
             <div className="bg-gradient-to-br from-brand-primary/40 to-brand-primary/10 rounded-3xl p-[2px] w-full max-w-6xl shadow-xl">
-                <div className="rounded-[inherit] bg-white backdrop-blur-md p-8 md:p-12 space-y-8">
+                <div className="rounded-[inherit] bg-white backdrop-blur-md p-4 sm:p-8 md:p-12 space-y-6 md:space-y-8">
                     {/* Header */}
                     <PatientsHeader
                         name={role === 'admin' ? 'Admin' : 'User'}
