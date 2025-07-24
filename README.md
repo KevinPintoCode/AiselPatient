@@ -40,7 +40,7 @@ App will be available at:
 http://localhost:3001 (or 3000 if running frontend only)
 
 🚀 3. Deployed App
-🌐 Frontend: https://aisel-case.vercel.app
+🌐 Frontend: https://aisel-patient-frontend.vercel.app
 
 🧠 Backend: https://aiselpatient-production.up.railway.app
 
