@@ -41,7 +41,7 @@ export default function PatientsPage() {
         if (page > maxPage) {
             setPage(maxPage);
         }
-    }, [patients?.length, page]); // Only depend on the length
+    }, [patients?.length, page, patients]);
 
     if (isLoading) return <p className="p-4 text-center">Loading patients...</p>
     if (error) return <p className="p-4 text-center text-red-500">Error loading patients.</p>
@@ -113,7 +113,7 @@ export default function PatientsPage() {
                     <DialogHeader>
                         <DialogTitle>Delete patient?</DialogTitle>
                     </DialogHeader>
-                    <p className="text-sm text-gray-600">They'll be gone from the list but hopefully still healthy! 🏃‍♂️💨</p>
+                    <p className="text-sm text-gray-600">They are gone from the list but hopefully still healthy! 🏃‍♂️💨</p>
                     <div className="flex justify-end gap-3 pt-4">
                         <Button variant="secondary" onClick={() => setConfirmId(null)}>Cancel</Button>
                         <Button className="!bg-red-600 text-white hover:!bg-red-700" onClick={confirmDelete}>Yes, delete</Button>
